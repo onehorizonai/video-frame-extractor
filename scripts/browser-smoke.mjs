@@ -7,13 +7,14 @@ import { unzipSync } from 'fflate'
 const fixture = process.env.VIDEO_FIXTURE
 if (!fixture) throw new Error('Set VIDEO_FIXTURE to a local browser-playable video file.')
 await stat(fixture)
+const appUrl = new URL(process.env.APP_URL || 'http://127.0.0.1:5173/')
 
 const browser = await chromium.launch({ channel: 'chrome', headless: true })
 const page = await browser.newPage({ acceptDownloads: true, viewport: { width: 1280, height: 900 } })
 const requests = []
 page.on('request', request => requests.push(request.url()))
 try {
-  await page.goto(process.env.APP_URL || 'http://127.0.0.1:5173/')
+  await page.goto(appUrl.href)
   await page.locator('input[type=file]').setInputFiles(fixture)
   await page.locator('.file-details').waitFor()
   await page.getByLabel('Number of frames').fill('3')
@@ -62,7 +63,7 @@ try {
   await page.locator('input[type=file]').setInputFiles({ name: 'broken.mp4', mimeType: 'video/mp4', buffer: Buffer.from('not a video') })
   await page.getByRole('alert').waitFor({ timeout: 20000 })
   assert.equal(await page.locator('.frame-card').count(), 0)
-  assert.ok(requests.every(url => url.startsWith('http://127.0.0.1:5173/') || url.startsWith('blob:')), `Unexpected request: ${requests.join(', ')}`)
+  assert.ok(requests.every(url => new URL(url).origin === appUrl.origin || url.startsWith('blob:')), `Unexpected request: ${requests.join(', ')}`)
   console.log('Chrome smoke passed: count and interval capture, PNG identity, selected ZIP, cancellation, malformed input, responsive screenshots, and local requests.')
 } finally {
   await browser.close()
