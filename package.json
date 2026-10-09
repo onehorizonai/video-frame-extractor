@@ -1,0 +1,43 @@
+{
+  "name": "@onehorizon/video-frame-extractor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "files": ["lib", "src/style.css", "README.md", "LICENSE"],
+  "exports": {
+    ".": {
+      "types": "./lib/core/index.d.ts",
+      "import": "./lib/core/index.js"
+    },
+    "./react": {
+      "types": "./lib/App.d.ts",
+      "import": "./lib/App.js"
+    },
+    "./style.css": "./src/style.css"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && npm run build:package && vite build --base ./",
+    "build:package": "tsc --project tsconfig.build.json",
+    "test": "node --experimental-strip-types --test --test-isolation=none tests/*.test.ts",
+    "smoke": "node scripts/browser-smoke.mjs"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3"
+  },
+  "peerDependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "playwright": "^1.64.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  }
+}
