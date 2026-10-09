@@ -36,4 +36,4 @@ The [MDN CC0 flower video](https://interactive-examples.mdn.mozilla.net/media/cc
 
 The project is MIT licensed. [fflate](https://github.com/101arrowz/fflate) is MIT licensed and creates local ZIP archives. React, React DOM, Vite, TypeScript, Playwright, and their type packages are development or interface dependencies; no fonts, codecs, or videos are bundled. See the lockfile for exact versions.
 
-The source and static app are ready for review. A public One Horizon repository and a stable One Horizon domain route need to be connected during publication; this checkout does not configure deployment credentials or a remote.
+The source and static app are ready for review. The One Horizon website consumes the React package on its `/video-frame-extractor` route after integration.

@@ -8,7 +8,7 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : 'Something went wrong. Try another file.'
 }
 
-export function App() {
+export function App({ embedded = false }: { embedded?: boolean } = {}) {
   const session = useRef<VideoSession | null>(null)
   const operation = useRef<AbortController | null>(null)
   const previews = useRef<PreviewFrame[]>([])
@@ -167,9 +167,10 @@ export function App() {
     }
   }
 
-  return <div className="site">
-    <header className="topbar"><a className="brand" href="https://onehorizon.ai/" aria-label="One Horizon home"><span className="brand-mark">◧</span> One Horizon</a><span className="topbar-label">Free local tools</span></header>
-    <main>
+  const MainTag = embedded ? 'div' : 'main'
+  return <div className={embedded ? 'site embedded' : 'site'}>
+    {!embedded && <header className="topbar"><a className="brand" href="https://onehorizon.ai/" aria-label="One Horizon home"><span className="brand-mark">◧</span> One Horizon</a><span className="topbar-label">Free local tools</span></header>}
+    <MainTag className="content">
       <div className="hero"><p className="eyebrow">A lighter way to find your stills</p><h1>Video frame extractor</h1><p className="intro">Turn a local video into a small set of timestamped PNGs. Review the frames, keep the useful ones, and export them directly from your browser.</p><div className="privacy"><span aria-hidden="true">●</span> Your video and images stay on this device. No account or upload.</div></div>
       <div className="workspace">
         <section className="panel setup" aria-labelledby="choose-title"><div className="section-heading"><span className="step">01</span><div><h2 id="choose-title">Choose a video</h2><p>Use a file your browser can play, such as a supported MP4 or WebM.</p></div></div>
@@ -190,7 +191,7 @@ export function App() {
         {frames.length ? <div className="frame-grid">{frames.map(frame => <article className="frame-card" key={frame.index}><img src={frame.previewUrl} alt={`Captured frame ${frame.index + 1} requested at ${formatTime(frame.requestedTime)}`} /><div className="frame-meta"><label className="frame-select"><input type="checkbox" checked={selected.has(frame.index)} onChange={() => toggle(frame.index)} /> <strong>Frame {String(frame.index + 1).padStart(2, '0')}</strong></label><dl><div><dt>Requested</dt><dd>{formatTime(frame.requestedTime)}</dd></div><div><dt>Decoded</dt><dd>{frame.decodedTime === null ? 'Unavailable' : formatTime(frame.decodedTime)}</dd></div></dl>{frame.duplicate && <p className="duplicate">Same decoded time as an earlier frame</p>}<button className="text-button" type="button" onClick={() => download(frame.blob, frame.name)}>Download PNG ↓</button></div></article>)}</div> : <div className="empty"><span aria-hidden="true">▧</span><p>Frames you capture will be shown here for selection.</p></div>}
       </section>
       <aside className="limits"><h2>Good to know</h2><p>Capture is limited to 30 frames, a 2 GiB source file, and resized PNGs up to 1920 × 1080 pixels. Browser codec support varies; the file extension alone does not guarantee playback. Decoded times are shown only when the browser reports them. The browser may return the same frame for nearby requests.</p></aside>
-    </main>
-    <footer><span>Made by <a href="https://onehorizon.ai/">One Horizon</a></span><a href="https://github.com/onehorizon-ai">One Horizon on GitHub</a></footer>
+    </MainTag>
+    {!embedded && <footer><span>Made by <a href="https://onehorizon.ai/">One Horizon</a></span><a href="https://github.com/onehorizonai/video-frame-extractor">View source</a></footer>}
   </div>
 }
