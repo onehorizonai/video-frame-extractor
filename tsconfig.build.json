@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "rootDir": "src",
+    "outDir": "lib",
+    "rewriteRelativeImportExtensions": true
+  },
+  "include": ["src/App.tsx", "src/core/**/*.ts"],
+  "exclude": ["tests", "src/main.tsx"]
+}

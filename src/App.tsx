@@ -168,7 +168,7 @@ export function App({ embedded = false }: { embedded?: boolean } = {}) {
   }
 
   const MainTag = embedded ? 'div' : 'main'
-  return <div className={embedded ? 'site embedded' : 'site'}>
+  return <div className={embedded ? 'video-frame-extractor embedded' : 'video-frame-extractor'}>
     {!embedded && <header className="topbar"><a className="brand" href="https://onehorizon.ai/" aria-label="One Horizon home"><span className="brand-mark">◧</span> One Horizon</a><span className="topbar-label">Free local tools</span></header>}
     <MainTag className="content">
       <div className="hero"><p className="eyebrow">A lighter way to find your stills</p><h1>Video frame extractor</h1><p className="intro">Turn a local video into a small set of timestamped PNGs. Review the frames, keep the useful ones, and export them directly from your browser.</p><div className="privacy"><span aria-hidden="true">●</span> Your video and images stay on this device. No account or upload.</div></div>
